@@ -69,6 +69,15 @@ public:
 
   long long previous_timestamp_;
 
+  // augmented sigma point matrix
+  MatrixXd Xsig_aug;
+
+  // augmented mean vector
+  VectorXd x_aug;
+
+  // augmented state covariance
+  MatrixXd P_aug;
+
   /**
    * Constructor
    */

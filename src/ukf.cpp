@@ -292,9 +292,9 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   */
   // Laser updates
   //measurement matrix
-  MatrixXd H_ = MatrixXd(2, 4);
-  H_ << 1, 0, 0, 0,
-        0, 1, 0, 0;
+  MatrixXd H_ = MatrixXd(2, 5);
+  H_ << 1, 0, 0, 0, 0,
+        0, 1, 0, 0, 0;
   MatrixXd R_ = MatrixXd(2, 2);
 
   //measurement covariance matrix - laser
@@ -302,6 +302,10 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
         0, 0.0225;
 
   VectorXd z = meas_package.raw_measurements_;
+
+  cout << "\nH_ = " << H_ << endl;
+  cout << "x_ = " << x_ << endl << endl;
+
   VectorXd z_pred = H_ * x_;
   VectorXd y = z - z_pred;
   MatrixXd Ht = H_.transpose();
@@ -396,7 +400,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
    ******************************************************************************/
 
   //create example vector for incoming radar measurement
-  VectorXd z = z = meas_package.raw_measurements_;
+  VectorXd z = meas_package.raw_measurements_;
 //  // FIXME:  Replace this sample value with real measurement reading
 //  z << 5.9214,
 //       0.2187,

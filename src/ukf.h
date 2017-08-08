@@ -23,10 +23,10 @@ public:
   bool use_radar_;
 
   ///* state vector: [pos1 pos2 vel_abs yaw_angle yaw_rate] in SI units and rad
-  VectorXd x_;
+  VectorXd x_pred_;
 
   ///* state covariance matrix
-  MatrixXd P_;
+  MatrixXd P_pred_;
 
   ///* predicted sigma points matrix
   MatrixXd Xsig_pred_;
@@ -93,6 +93,27 @@ public:
    * @param meas_package The latest measurement data of either radar or laser
    */
   void ProcessMeasurement(MeasurementPackage meas_package);
+
+  /**
+   * Creates sigma points
+   * @param Xsig_out Reference to state mean
+   */
+  void GenerateSigmaPoints(MatrixXd* Xsig_out);
+
+  /**
+   * Predicts Sigma Points
+   * @param Xsig_out Reference to state mean
+   * @param n_aug_ Augmented state dimension
+   * @param delta_t Time difference since last measurement
+   */
+  void PredictSigmaPoints(MatrixXd *Xsig_out, int n_aug_, double delta_t);
+
+  /**
+   * Predict Mean And Covariance
+   * @param x_pred_out Reference to state mean
+   * @param P_pred_out Reference to state covariance
+   */
+  void PredictMeanAndCovariance(VectorXd* x_pred_out, MatrixXd* P_pred_out);
 
   /**
    * Prediction Predicts sigma points, the state, and the state covariance

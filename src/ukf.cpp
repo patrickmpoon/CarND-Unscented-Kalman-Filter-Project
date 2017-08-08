@@ -17,17 +17,25 @@ UKF::UKF() {
   // if this is false, radar measurements will be ignored (except during init)
   use_radar_ = true;
 
+  is_initialized_ = false;
+
+  //set state dimension
+  n_x_ = 5;
+
+  //set augmented dimension
+  n_aug_ = 7;
+
   // initial state vector
   x_ = VectorXd(5);
 
   // initial covariance matrix
-  P_ = MatrixXd(5, 5);
+  P_ = MatrixXd(n_x_, n_x_);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 5;  // FIXME
+  std_a_ = 3.80;  // FIXME
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 0.2;  // FIXME
+  std_yawdd_ = 0.3;  // FIXME
 
   // Laser measurement noise standard deviation position1 in m
   std_laspx_ = 0.15;
@@ -51,14 +59,6 @@ UKF::UKF() {
 
   Hint: one or more values initialized above might be wildly off...
   */
-
-  is_initialized_ = false;
-
-  //set state dimension
-  n_x_ = 5;
-
-  //set augmented dimension
-  n_aug_ = 7;
 
   //create matrix with predicted sigma points as columns
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
@@ -302,10 +302,6 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
         0, 0.0225;
 
   VectorXd z = meas_package.raw_measurements_;
-
-  cout << "\nH_ = " << H_ << endl;
-  cout << "x_ = " << x_ << endl << endl;
-
   VectorXd z_pred = H_ * x_;
   VectorXd y = z - z_pred;
   MatrixXd Ht = H_.transpose();
